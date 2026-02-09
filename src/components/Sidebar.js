@@ -14,6 +14,7 @@ import {
   QrCode
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { supabase } from '@/lib/supabase';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -27,6 +28,10 @@ export default function Sidebar() {
     { name: '통계/레포트', icon: BarChart3, path: '/reports' },
     { name: '설정', icon: Settings, path: '/settings' },
   ];
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
 
   return (
     <aside className="sidebar glass">
@@ -53,8 +58,8 @@ export default function Sidebar() {
           }}>
             I
           </div>
-          <span className="logo-text" style={{ fontWeight: 700, fontSize: '1.2rem', letterSpacing: '-0.5px' }}>
-            IDEACUBE
+          <span className="logo-text" style={{ fontWeight: 700, fontSize: '0.95rem', letterSpacing: '-0.5px', whiteSpace: 'nowrap' }}>
+            아이디어큐브 아름/SW코딩
           </span>
         </div>
 
@@ -126,20 +131,25 @@ export default function Sidebar() {
             원장
           </div>
           <div className="user-info-text">
-            <div style={{ fontSize: '14px', fontWeight: 600 }}>김원장 님</div>
+            <div style={{ fontSize: '14px', fontWeight: 600 }}>이순남 원장님</div>
             <div style={{ fontSize: '11px', color: '#64748b' }}>Admin</div>
           </div>
         </div>
-        <button className="logout-button" style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          color: '#f87171',
-          padding: '8px',
-          width: '100%',
-          fontSize: '14px',
-          justifyContent: 'center'
-        }}>
+        <button
+          onClick={handleLogout}
+          className="logout-button"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            color: '#f87171',
+            padding: '8px',
+            width: '100%',
+            fontSize: '14px',
+            justifyContent: 'center',
+            cursor: 'pointer'
+          }}
+        >
           <LogOut size={16} />
           <span className="menu-text">로그아웃</span>
         </button>

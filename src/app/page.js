@@ -118,7 +118,7 @@ export default function Home() {
       }}>
         <div>
           <h1 style={{ marginBottom: '8px' }}>대시보드</h1>
-          <p>오늘의 아이디어큐브 현황을 실시간으로 확인하세요.</p>
+          <p>오늘의 아이디어큐브 아름/SW코딩 현황을 실시간으로 확인하세요.</p>
         </div>
         <Link href="/students">
           <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', width: 'fit-content' }}>
