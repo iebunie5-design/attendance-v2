@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎓 스마트 출결 관리 시스템 (IDEACUBE Attendance v2)
 
-## Getting Started
+아이디어큐브 학생 및 출결 관리를 위한 프리미엄 웹 애플리케이션입니다. Next.js와 최신 웹 기술을 활용하여 세련된 디자인과 강력한 관리 기능을 제공합니다.
 
-First, run the development server:
+## 🚀 주요 기능
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 1. 📊 지능형 대시보드
+*   **실시간 통계**: 오늘 출석률, 지각/결석 인원 등 핵심 지표를 한눈에 확인.
+*   **수업 목록 연동**: 오늘의 수업 일정을 확인하고 클릭 시 즉시 출결 기록 페이지로 이동.
+*   **미기록 알림**: 출결 입력이 누락된 반이나 특이사항이 있는 학생을 자동으로 감지하여 알림.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. 📱 QR 코드 키오스크 출결
+*   **실시간 스캔**: 기기 카메라를 활용한 빠른 QR 코드 인식.
+*   **즉각적인 피드백**: 학생별 출석 확인 모달 및 성공 사운드 효과(구현 예정).
+*   **중복 방지**: 짧은 시간 내 중복 스캔을 방지하는 스마트 로직 적용.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 3. 📝 정교한 출결 기록 관리
+*   **유연한 상태 관리**: 출석, 지각, 결석, 조퇴의 4단계 상태 관리.
+*   **일괄 처리**: '기본 출석 적용' 기능으로 전체 학생 상태를 한 번에 입력.
+*   **날짜 선택기**: 특정 날짜를 선택하여 과거 기록 조회 및 수정 가능.
+*   **사유 관리**: 결석/지각 사유 입력 필드 및 미입력 시 경고 아이콘 표시.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. 👥 보강된 학생 관리 (CRUD)
+*   **학생 정보 관리**: 신규 학생 등록, 정보 수정, 삭제 기능 완벽 지원.
+*   **고유 QR 생성**: 학생별 유니크한 QR 코드를 자동 생성하고 즉시 확인.
+*   **검색 및 필터**: 학생 이름으로 빠른 검색 및 반별 필터링 기능.
 
-## Learn More
+### 5. 📈 월간 출석부 및 레포트
+*   **월간 현황판**: 한 달간의 모든 학생별 출결 현황을 표(Table) 형태로 조회.
+*   **인쇄 최적화**: 레이아웃이 깨지지 않는 **인쇄 전용 스타일(Print CSS)** 적용으로 간편한 종이 출력 지원.
+*   **통계 수치**: 학생별 월간 출석/지각/결석 횟수 자동 합산.
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠 기술 스택
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+*   **Framework**: [Next.js 15 (App Router)](https://nextjs.org/)
+*   **UI Library**: [React 19](https://reactjs.org/)
+*   **Icons**: [Lucide React](https://lucide.dev/)
+*   **Animation**: [Framer Motion](https://www.framer.com/motion/)
+*   **QR Tech**: `qrcode.react`, `html5-qrcode`
+*   **Styling**: Vanilla CSS (Global Design System + CSS Modules)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🎨 디자인 시스템
 
-## Deploy on Vercel
+*   **Aesthetics**: Glassmorphism 디자인 기반의 다크 테마.
+*   **Interaction**: 프리미엄 감성을 위한 부드러운 호버 효과 및 페이지 전환 애니메이션.
+*   **UX**: 사용자 경험을 극대화한 실시간 검색 및 모달 인터페이스.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🏗️ 설치 및 실행 방법
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1.  **의존성 설치**
+    ```bash
+    npm install
+    ```
+
+2.  **개발 서버 실행**
+    ```bash
+    npm run dev
+    ```
+    이후 [http://localhost:3000](http://localhost:3000)에서 접속 가능합니다. (포트 충돌 시 3001 등 사용)
+
+---
+
+본 프로젝트는 **Ideacube**의 효율적인 교육 환경을 위해 제작되었습니다. 😊✨
