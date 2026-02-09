@@ -346,44 +346,12 @@ export default function ClassesPage() {
             </AnimatePresence>
 
             <style jsx>{`
-                .info-item {
-                    display: flex;
-                    alignItems: center;
-                    gap: 10px;
-                    color: #94a3b8;
-                    font-size: 14px;
-                }
-                .action-btn {
-                    padding: 8px;
-                    border-radius: 8px;
-                    background: rgba(255,255,255,0.05);
-                    color: #94a3b8;
-                    border: none;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-                .action-btn:hover {
-                    background: rgba(255,255,255,0.1);
-                    transform: translateY(-2px);
-                }
-                .action-btn.delete:hover {
-                    background: rgba(239, 68, 68, 0.1);
-                    color: #ef4444;
-                }
-                .action-btn.edit:hover {
-                    color: #6366f1;
-                }
-                .detail-btn {
-                    color: #6366f1;
-                    font-size: 14px;
-                    font-weight: 600;
-                    display: flex;
-                    align-items: center;
-                    gap: 4px;
-                    background: transparent;
-                    border: none;
-                    cursor: pointer;
-                }
+                .info-item { display: flex; align-items: center; gap: 10px; color: #94a3b8; font-size: 14px; }
+                .action-btn { padding: 8px; border-radius: 8px; background: rgba(255,255,255,0.05); color: #94a3b8; border: none; cursor: pointer; transition: all 0.2s; }
+                .action-btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+                .action-btn.delete:hover { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+                .action-btn.edit:hover { color: #6366f1; }
+                .detail-btn { color: #6366f1; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 4px; background: transparent; border: none; cursor: pointer; }
                 .add-placeholder-card {
                     border: 2px dashed var(--card-border);
                     border-radius: 16px;
@@ -405,127 +373,6 @@ export default function ClassesPage() {
                     justify-content: center;
                     margin-bottom: 16px;
                 }
-                .modal-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(0, 0, 0, 0.7);
-                    backdrop-filter: blur(4px);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 1000;
-                    padding: 20px;
-                }
-                .modal-content {
-                    background: #0f172a;
-                    border: 1px solid var(--card-border);
-                    border-radius: 24px;
-                    padding: 32px;
-                    width: 100%;
-                    max-width: 500px;
-                    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-                    position: relative;
-                    z-index: 1001;
-                }
-                .modal-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 24px;
-                }
-                .modal-form {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 20px;
-                }
-                .form-group {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 8px;
-                }
-                .form-row {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 16px;
-                }
-                label {
-                    font-size: 14px;
-                    font-weight: 500;
-                    color: #94a3b8;
-                }
-                input {
-                    background: rgba(0, 0, 0, 0.4);
-                    border: 1px solid var(--card-border);
-                    border-radius: 12px;
-                    padding: 12px 16px;
-                    color: white;
-                    font-size: 15px;
-                    outline: none;
-                    transition: all 0.2s;
-                }
-                input:focus {
-                    border-color: #6366f1;
-                    background: rgba(0, 0, 0, 0.6);
-                    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-                }
-                .modal-footer {
-                    display: flex;
-                    gap: 12px;
-                    margin-top: 12px;
-                }
-                .cancel-btn {
-                    flex: 1;
-                    padding: 14px;
-                    border-radius: 12px;
-                    background: rgba(255,255,255,0.05);
-                    color: white;
-                    border: 1px solid rgba(255,255,255,0.1);
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-                .cancel-btn:hover {
-                    background: rgba(255,255,255,0.1);
-                }
-                .submit-btn {
-                    flex: 2;
-                    padding: 14px;
-                    border-radius: 12px;
-                    font-weight: 600;
-                    transition: all 0.2s;
-                }
-                .close-btn {
-                    background: none;
-                    border: none;
-                    color: #64748b;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-                .close-btn:hover {
-                    color: white;
-                    transform: rotate(90deg);
-                }
-                .toast {
-                    position: fixed;
-                    bottom: 30px;
-                    right: 30px;
-                    padding: 16px 24px;
-                    border-radius: 12px;
-                    background: rgba(15, 23, 42, 0.9);
-                    backdrop-filter: blur(8px);
-                    border: 1px solid var(--card-border);
-                    color: white;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    z-index: 9999;
-                    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-                }
-                .toast.success { border-left: 4px solid #10b981; }
-                .toast.error { border-left: 4px solid #ef4444; }
             `}</style>
         </div>
     );

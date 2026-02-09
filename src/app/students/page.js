@@ -331,21 +331,6 @@ export default function StudentsPage() {
                 )}
             </AnimatePresence>
 
-            <style jsx global>{`
-                .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 10001; padding: 20px; }
-                .modal-content { background: #0f172a; border: 1px solid var(--card-border); border-radius: 24px; padding: 32px; width: 100%; max-width: 500px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
-                .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-                .modal-form { display: flex; flex-direction: column; gap: 20px; }
-                .form-group { display: flex; flex-direction: column; gap: 8px; }
-                .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-                label { font-size: 14px; font-weight: 500; color: #94a3b8; }
-                input, select { background: rgba(0, 0, 0, 0.4); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 16px; color: white; font-size: 15px; outline: none; }
-                .modal-footer { display: flex; gap: 12px; margin-top: 12px; }
-                .cancel-btn { flex: 1; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.05); color: white; border: none; font-weight: 600; cursor: pointer; }
-                .toast { position: fixed; bottom: 30px; right: 30px; padding: 16px 24px; border-radius: 12px; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(8px); border: 1px solid var(--card-border); color: white; display: flex; alignItems: center; gap: 10px; z-index: 9999; }
-                .toast.success { border-left: 4px solid #10b981; }
-                .toast.error { border-left: 4px solid #ef4444; }
-            `}</style>
         </div>
     );
 }
