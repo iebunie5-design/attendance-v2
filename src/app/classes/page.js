@@ -102,27 +102,29 @@ export default function ClassesPage() {
     // 3. 등록/수정 전송 (Create / Update)
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // 데이터베이스 컬럼과 일치하도록 페이로드 구성
         const payload = {
-            ...formData,
+            name: formData.name,
+            teacher: formData.teacher,
+            schedule: formData.schedule,
+            room: formData.room
         };
 
         if (editingClass) {
             // 수정
             const { error } = await supabase
                 .from('classes')
-                .update({
-                    name: formData.name,
-                    teacher: formData.teacher,
-                    schedule: formData.schedule,
-                    room: formData.room
-                })
+                .update(payload)
                 .eq('id', editingClass.id);
 
             if (error) {
-                triggerToast('수정 중 오류가 발생했습니다.', 'error');
+                console.error('Update Error:', error);
+                triggerToast(`수정 오류: ${error.message || '데이터베이스 오류'}`, 'error');
             } else {
                 fetchClasses();
                 triggerToast('반 정보가 수정되었습니다.');
+                setIsModalOpen(false);
             }
         } else {
             // 추가
@@ -131,13 +133,14 @@ export default function ClassesPage() {
                 .insert([payload]);
 
             if (error) {
-                triggerToast('반 개설 중 오류가 발생했습니다.', 'error');
+                console.error('Insert Error:', error);
+                triggerToast(`등록 오류: ${error.message || '데이터베이스 오류'}`, 'error');
             } else {
                 fetchClasses();
                 triggerToast('새로운 반이 개설되었습니다.');
+                setIsModalOpen(false);
             }
         }
-        setIsModalOpen(false);
     };
 
     return (
