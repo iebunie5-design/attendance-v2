@@ -142,20 +142,29 @@ export default function AttendancePage() {
     };
 
     const handleReset = async () => {
-        if (!confirm('현재 반의 당일 출결 기록을 모두 삭제하시겠습니까?')) return;
+        if (!confirm('현재 반의 출결 기록과 등록된 학생 명단을 모두 삭제하시겠습니까?\n이 작업은 학생 정보 자체를 시스템에서 영구히 삭제합니다.')) return;
 
         setSaveLoading(true);
-        const { error } = await supabase
+
+        // 1. 해당 날짜/반의 모든 출결 기록 삭제
+        const { error: attError } = await supabase
             .from('attendance')
             .delete()
             .eq('class_id', selectedClass)
             .eq('date', selectedDate);
 
-        if (error) {
-            triggerToast('기록 삭제 중 오류가 발생했습니다.', 'error');
+        // 2. 해당 반에 소속된 모든 학생 삭제 (사용자 요청 반영)
+        const { error: studentError } = await supabase
+            .from('students')
+            .delete()
+            .eq('class_id', selectedClass);
+
+        if (attError || studentError) {
+            triggerToast('초기화 중 오류가 발생했습니다.', 'error');
         } else {
             setAttendanceData({});
-            triggerToast('출결 기록이 초기화되었습니다.');
+            setStudents([]);
+            triggerToast('출결 기록과 학생 명단이 모두 삭제되었습니다.');
         }
         setSaveLoading(false);
     };
