@@ -77,7 +77,7 @@ export default function QRAttendancePage() {
         if (val.length > 1) {
             const { data } = await supabase
                 .from('students')
-                .select('id, name, qr_code_data, classes(name)')
+                .select('id, name, class_id, qr_code_data, classes(name)')
                 .ilike('name', `%${val}%`)
                 .limit(5);
             setSearchResults(data || []);
