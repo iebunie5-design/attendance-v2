@@ -86,20 +86,30 @@ export default function QRAttendancePage() {
         }
     };
 
-    const handleAttendance = async (qrValue) => {
+    const handleAttendance = async (studentData) => {
         if (isProcessing) return;
-        if (lastScanned && lastScanned.qr === qrValue && (Date.now() - lastScanned.time < 8000)) return;
+
+        // QR 스캔의 경우 qrValue(string)가 들어오고, 수동 입력의 경우 student 객체가 들어옴
+        const isManual = typeof studentData === 'object';
+        const identifier = isManual ? studentData.id : studentData;
+
+        if (lastScanned && lastScanned.id === identifier && (Date.now() - lastScanned.time < 8000)) return;
 
         setIsProcessing(true);
         try {
-            const { data: student, error: studentError } = await supabase
-                .from('students')
-                .select('id, name, class_id')
-                .eq('qr_code_data', qrValue)
-                .single();
+            let student = isManual ? studentData : null;
 
-            if (studentError || !student) {
-                setScanError('정보 정보가 없는 QR입니다.');
+            if (!isManual) {
+                const { data, error: studentError } = await supabase
+                    .from('students')
+                    .select('id, name, class_id')
+                    .eq('qr_code_data', identifier)
+                    .single();
+                student = data;
+            }
+
+            if (!student) {
+                setScanError('학생 정보를 찾을 수 없습니다.');
                 setTimeout(() => setScanError(null), 3000);
             } else {
                 const today = new Date().toISOString().split('T')[0];
@@ -115,7 +125,7 @@ export default function QRAttendancePage() {
                 if (attError) throw attError;
 
                 setScanResult({ name: student.name, time: new Date().toLocaleTimeString() });
-                setLastScanned({ qr: qrValue, time: Date.now() });
+                setLastScanned({ id: student.id, time: Date.now() });
                 setIsManualModalOpen(false);
                 setTimeout(() => setScanResult(null), 3000);
             }
@@ -167,9 +177,12 @@ export default function QRAttendancePage() {
                             <input autoFocus placeholder="학생 이름을 입력하세요..." value={manualSearch} onChange={handleManualSearch} style={{ width: '100%', padding: '12px', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--card-border)', borderRadius: '10px', color: 'white', marginBottom: '15px' }} />
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                 {searchResults.map(s => (
-                                    <button key={s.id} onClick={() => handleAttendance(s.qr_code_data)} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: 'white', cursor: 'pointer' }}>
-                                        <span><strong>{s.name}</strong> ({s.classes?.name || '미배정'})</span>
-                                        <span style={{ color: '#6366f1', fontWeight: 600 }}>선택</span>
+                                    <button key={s.id} onClick={() => handleAttendance(s)} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: 'white', cursor: 'pointer', width: '100%' }}>
+                                        <div style={{ textAlign: 'left' }}>
+                                            <div style={{ fontWeight: 600 }}>{s.name}</div>
+                                            <div style={{ fontSize: '12px', color: '#64748b' }}>{s.classes?.name || '미배정'}</div>
+                                        </div>
+                                        <span style={{ color: '#6366f1', fontWeight: 600, alignSelf: 'center' }}>선택</span>
                                     </button>
                                 ))}
                             </div>
