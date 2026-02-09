@@ -116,24 +116,31 @@ export default function ReportsPage() {
 
     return (
         <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '40px' }}>
-                <div>
+            <header className="page-header" style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+                marginBottom: '32px',
+                flexWrap: 'wrap',
+                gap: '20px'
+            }}>
+                <div style={{ flex: '1', minWidth: '240px' }}>
                     <h1 style={{ marginBottom: '8px' }}>통계 및 레포트</h1>
                     <p>실시간 DB 데이터를 분석한 학원 운영 현황입니다.</p>
                 </div>
-                <div style={{ display: 'flex', gap: '12px' }}>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     <Link href="/reports/monthly">
-                        <button style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.05)', padding: '12px 20px', borderRadius: '12px', color: 'white', fontSize: '14px', cursor: 'pointer', border: '1px solid rgba(255,255,255,0.1)' }}>
-                            <Printer size={18} /> 월간 출석부 보기
+                        <button style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.05)', padding: '10px 16px', borderRadius: '12px', color: 'white', fontSize: '13px', cursor: 'pointer', border: '1px solid rgba(255,255,255,0.1)' }}>
+                            <Printer size={16} /> <span className="hide-mobile">월간 출석부</span><span className="show-mobile">출석부</span>
                         </button>
                     </Link>
-                    <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Download size={20} /> 실시간 데이터 백업
+                    <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', padding: '10px 16px' }}>
+                        <Download size={16} /> <span className="hide-mobile">데이터 백업</span><span className="show-mobile">백업</span>
                     </button>
                 </div>
             </header>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '32px' }}>
+            <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
                 {/* Weekly Trend Chart */}
                 <div className="card" style={{ padding: '32px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '40px' }}>

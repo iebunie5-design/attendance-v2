@@ -189,6 +189,33 @@ button {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* Responsive Utilities */
+.hide-mobile {
+  display: inline-block;
+}
+
+.show-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .show-mobile {
+    display: inline-block !important;
+  }
+}
+
+.sidebar {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.content-wrapper {
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Typography */
 h1 {
   font-size: 2.5rem;

@@ -128,30 +128,32 @@ export default function ClassesPage() {
 
     return (
         <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
-            <header style={{
+            <header className="page-header" style={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'flex-end',
-                marginBottom: '32px'
+                marginBottom: '32px',
+                flexWrap: 'wrap',
+                gap: '20px'
             }}>
-                <div>
+                <div style={{ flex: '1', minWidth: '240px' }}>
                     <h1 style={{ marginBottom: '8px' }}>반 관리</h1>
                     <p>학원의 모든 정규 수업과 담당 강사를 관리합니다.</p>
                 </div>
                 <button
                     onClick={openAddModal}
                     className="btn-primary"
-                    style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '8px', width: 'fit-content' }}
                 >
                     <Plus size={20} />
-                    새로운 반 개설
+                    <span className="hide-mobile">새로운 반 개설</span><span className="show-mobile">반 추가</span>
                 </button>
             </header>
 
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-                gap: '24px'
+                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                gap: '20px'
             }}>
                 <AnimatePresence mode="popLayout">
                     {classes.map((cls, idx) => (

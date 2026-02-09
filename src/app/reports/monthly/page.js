@@ -111,14 +111,21 @@ export default function MonthlyAttendance() {
 
     return (
         <div className="monthly-attendance" style={{ animation: 'fadeIn 0.5s ease-out' }}>
-            <header className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '32px' }}>
-                <div>
+            <header className="page-header no-print" style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+                marginBottom: '32px',
+                flexWrap: 'wrap',
+                gap: '16px'
+            }}>
+                <div style={{ flex: '1', minWidth: '240px' }}>
                     <h1 style={{ marginBottom: '8px' }}>월간 출석부</h1>
                     <p>반별 월간 출결 현황을 실시간 DB 데이터로 확인하고 인쇄합니다.</p>
                 </div>
-                <div style={{ display: 'flex', gap: '12px' }}>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', width: '100%', maxWidth: 'fit-content' }}>
                     {/* Class Selector */}
-                    <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'relative', flex: '1', minWidth: '140px' }}>
                         <select
                             value={selectedClass}
                             onChange={(e) => setSelectedClass(e.target.value)}
@@ -126,31 +133,31 @@ export default function MonthlyAttendance() {
                                 appearance: 'none',
                                 background: 'rgba(255,255,255,0.05)',
                                 color: 'white',
-                                padding: '10px 40px 10px 16px',
+                                padding: '10px 32px 10px 12px',
                                 borderRadius: '12px',
                                 border: '1px solid rgba(255,255,255,0.1)',
                                 cursor: 'pointer',
-                                fontSize: '14px',
-                                minWidth: '160px'
+                                fontSize: '13px',
+                                width: '100%'
                             }}
                         >
                             {classes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                         </select>
-                        <ChevronDown size={16} style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#64748b' }} />
+                        <ChevronDown size={14} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#64748b' }} />
                     </div>
 
                     {/* Month Picker */}
-                    <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', padding: '10px 16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                        <CalendarIcon size={16} style={{ marginRight: '8px', color: '#6366f1' }} />
+                    <div style={{ flex: '1', minWidth: '140px', display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', padding: '10px 12px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                        <CalendarIcon size={14} style={{ marginRight: '6px', color: '#6366f1' }} />
                         <input
                             type="month"
                             value={selectedMonth}
                             onChange={(e) => setSelectedMonth(e.target.value)}
-                            style={{ background: 'none', border: 'none', color: 'white', fontSize: '14px', outline: 'none', cursor: 'pointer', colorScheme: 'dark' }}
+                            style={{ background: 'none', border: 'none', color: 'white', fontSize: '13px', outline: 'none', cursor: 'pointer', colorScheme: 'dark', width: '100%' }}
                         />
                     </div>
-                    <button onClick={handlePrint} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Printer size={18} /> 출석부 출력
+                    <button onClick={handlePrint} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', padding: '10px 16px' }}>
+                        <Printer size={16} /> <span className="hide-mobile">출석부 출력</span><span className="show-mobile">인쇄</span>
                     </button>
                 </div>
             </header>

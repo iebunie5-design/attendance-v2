@@ -138,25 +138,32 @@ export default function StudentsPage() {
 
     return (
         <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '32px' }}>
-                <div>
+            <header className="page-header" style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+                marginBottom: '32px',
+                flexWrap: 'wrap',
+                gap: '20px'
+            }}>
+                <div style={{ flex: '1', minWidth: '240px' }}>
                     <h1 style={{ marginBottom: '8px' }}>학생 관리</h1>
                     <p>학생 학적 정보와 QR 코드를 통합 관리합니다.</p>
                 </div>
-                <button className="btn-primary" onClick={handleOpenAddModal} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Plus size={20} /> 신규 학생 등록
+                <button className="btn-primary" onClick={handleOpenAddModal} style={{ display: 'flex', alignItems: 'center', gap: '8px', width: 'fit-content' }}>
+                    <Plus size={20} /> <span className="hide-mobile">신규 학생 등록</span><span className="show-mobile">학생 등록</span>
                 </button>
             </header>
 
             {/* Statistics Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '32px' }}>
-                <div className="card" style={{ padding: '20px', textAlign: 'center' }}>
-                    <div style={{ color: '#94a3b8', fontSize: '14px', marginBottom: '8px' }}>전체 학생</div>
-                    <div style={{ fontSize: '24px', fontWeight: 700, color: '#6366f1' }}>{students.length}명</div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px', marginBottom: '32px' }}>
+                <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
+                    <div style={{ color: '#94a3b8', fontSize: '13px', marginBottom: '4px' }}>전체 학생</div>
+                    <div style={{ fontSize: '20px', fontWeight: 700, color: '#6366f1' }}>{students.length}명</div>
                 </div>
-                <div className="card" style={{ padding: '20px', textAlign: 'center' }}>
-                    <div style={{ color: '#94a3b8', fontSize: '14px', marginBottom: '8px' }}>미배정 학생</div>
-                    <div style={{ fontSize: '24px', fontWeight: 700, color: '#f59e0b' }}>
+                <div className="card" style={{ padding: '16px', textAlign: 'center' }}>
+                    <div style={{ color: '#94a3b8', fontSize: '13px', marginBottom: '4px' }}>미배정 학생</div>
+                    <div style={{ fontSize: '20px', fontWeight: 700, color: '#f59e0b' }}>
                         {students.filter(s => !s.class_id).length}명
                     </div>
                 </div>
@@ -175,55 +182,57 @@ export default function StudentsPage() {
             </div>
 
             <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
-                <div style={{ overflowX: 'auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+                    <table style={{ minWidth: '800px', width: '100%', borderCollapse: 'collapse' }}>
                         <thead>
-                            <tr style={{ background: 'rgba(255,255,255,0.02)', textAlign: 'left', fontSize: '14px', color: '#64748b' }}>
-                                <th style={{ padding: '16px 24px', fontWeight: 500 }}>이름 / 학교</th>
-                                <th style={{ padding: '16px 24px', fontWeight: 500 }}>소속 반</th>
-                                <th style={{ padding: '16px 24px', fontWeight: 500 }}>연락처</th>
-                                <th style={{ padding: '16px 24px', fontWeight: 500 }}>생년월일</th>
-                                <th style={{ padding: '16px 24px', fontWeight: 500, textAlign: 'right' }}>관리</th>
+                            <tr style={{ background: 'rgba(255,255,255,0.02)', textAlign: 'left', fontSize: '13px', color: '#64748b' }}>
+                                <th style={{ padding: '16px 20px', fontWeight: 500 }}>이름 / 학교</th>
+                                <th style={{ padding: '16px 20px', fontWeight: 500 }}>소속 반</th>
+                                <th style={{ padding: '16px 20px', fontWeight: 500 }}>연락처</th>
+                                <th style={{ padding: '16px 20px', fontWeight: 500 }}>생년월일</th>
+                                <th style={{ padding: '16px 20px', fontWeight: 500, textAlign: 'right' }}>관리</th>
                             </tr>
                         </thead>
                         <tbody>
                             {loading ? (
                                 <tr><td colSpan="5" style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>로딩 중...</td></tr>
                             ) : filteredStudents.length === 0 ? (
-                                <tr><td colSpan="5" style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>학생 데이터가 없습니다.</td></tr>
+                                <tr><td colSpan="5" style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>검색 결과가 없습니다.</td></tr>
                             ) : filteredStudents.map((student) => (
                                 <tr key={student.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                    <td style={{ padding: '20px 24px' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                                            <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600 }}>
+                                    <td style={{ padding: '16px 20px' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, flexShrink: 0 }}>
                                                 {student.name[0]}
                                             </div>
-                                            <div>
-                                                <div style={{ fontWeight: 600 }}>{student.name}</div>
-                                                <div style={{ fontSize: '12px', color: '#64748b', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                                    <School size={12} /> {student.school || '학교미입력'} • {student.grade || '-'}
+                                            <div style={{ minWidth: 0 }}>
+                                                <div style={{ fontWeight: 600, fontSize: '14px' }}>{student.name}</div>
+                                                <div style={{ fontSize: '11px', color: '#64748b', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                    <School size={11} /> {student.school || '미입력'} • {student.grade || '-'}
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td style={{ padding: '20px 24px' }}>
-                                        <span style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '8px', background: 'rgba(99, 102, 241, 0.1)', color: '#818cf8' }}>
+                                    <td style={{ padding: '16px 20px' }}>
+                                        <span style={{ fontSize: '11px', padding: '3px 8px', borderRadius: '6px', background: 'rgba(99, 102, 241, 0.1)', color: '#818cf8', whiteSpace: 'nowrap' }}>
                                             {student.classes?.name || '미배정'}
                                         </span>
                                     </td>
-                                    <td style={{ padding: '20px 24px' }}>
-                                        <div style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px', color: '#94a3b8' }}>
-                                            <Phone size={13} /> {student.parent_contact || '-'}
+                                    <td style={{ padding: '16px 20px' }}>
+                                        <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px', color: '#94a3b8', whiteSpace: 'nowrap' }}>
+                                            <Phone size={12} /> {student.parent_contact || '-'}
                                         </div>
                                     </td>
-                                    <td style={{ padding: '20px 24px', fontSize: '13px', color: '#64748b' }}>
-                                        <Calendar size={13} style={{ marginRight: '6px' }} /> {student.birth_date || '-'}
+                                    <td style={{ padding: '16px 20px', fontSize: '12px', color: '#64748b', whiteSpace: 'nowrap' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                            <Calendar size={12} /> {student.birth_date || '-'}
+                                        </div>
                                     </td>
-                                    <td style={{ padding: '20px 24px', textAlign: 'right' }}>
-                                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
-                                            <button onClick={() => { setSelectedStudent(student); setIsQRModalOpen(true); }} style={{ padding: '8px', borderRadius: '8px', background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1' }} title="QR"><QrCode size={16} /></button>
-                                            <button onClick={() => handleOpenEditModal(student)} style={{ padding: '8px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', color: '#94a3b8' }} title="수정"><Edit2 size={16} /></button>
-                                            <button onClick={() => handleDelete(student.id, student.name)} style={{ padding: '8px', borderRadius: '8px', background: 'rgba(239, 68, 68, 0.05)', color: '#ef4444' }} title="삭제"><Trash2 size={16} /></button>
+                                    <td style={{ padding: '16px 20px', textAlign: 'right' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '6px' }}>
+                                            <button onClick={() => { setSelectedStudent(student); setIsQRModalOpen(true); }} style={{ padding: '6px', borderRadius: '8px', background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1' }} title="QR"><QrCode size={14} /></button>
+                                            <button onClick={() => handleOpenEditModal(student)} style={{ padding: '6px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', color: '#94a3b8' }} title="수정"><Edit2 size={14} /></button>
+                                            <button onClick={() => handleDelete(student.id, student.name)} style={{ padding: '6px', borderRadius: '8px', background: 'rgba(239, 68, 68, 0.05)', color: '#ef4444' }} title="삭제"><Trash2 size={14} /></button>
                                         </div>
                                     </td>
                                 </tr>
