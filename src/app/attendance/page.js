@@ -12,7 +12,9 @@ import {
     Search,
     AlertCircle,
     CheckCircle2,
-    Calendar
+    Calendar,
+    Trash2,
+    RotateCcw
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
@@ -84,10 +86,15 @@ export default function AttendancePage() {
     };
 
     const updateStatus = (studentId, status) => {
-        setAttendanceData(prev => ({
-            ...prev,
-            [studentId]: { ...prev[studentId], status }
-        }));
+        setAttendanceData(prev => {
+            const currentStatus = prev[studentId]?.status;
+            // If clicking the same status, deselect it (delete)
+            const newStatus = currentStatus === status ? null : status;
+            return {
+                ...prev,
+                [studentId]: { ...prev[studentId], status: newStatus }
+            };
+        });
     };
 
     const updateMemo = (studentId, memo) => {
@@ -110,12 +117,7 @@ export default function AttendancePage() {
                 memo: attendanceData[studentId].memo || ''
             }));
 
-        if (records.length === 0) {
-            triggerToast('기록할 출결 데이터가 없습니다.', 'error');
-            setSaveLoading(false);
-            return;
-        }
-
+        // Always delete first for this class/date
         const { error: delError } = await supabase
             .from('attendance')
             .delete()
@@ -124,10 +126,36 @@ export default function AttendancePage() {
 
         if (delError) {
             triggerToast('저장 중 오류가 발생했습니다.', 'error');
-        } else {
+            setSaveLoading(false);
+            return;
+        }
+
+        if (records.length > 0) {
             const { error: insError } = await supabase.from('attendance').insert(records);
             if (insError) triggerToast('저장 중 오류가 발생했습니다.', 'error');
             else triggerToast('출결 정보가 성공적으로 저장되었습니다.');
+        } else {
+            triggerToast('모든 출결 기록이 삭제되었습니다.');
+        }
+
+        setSaveLoading(false);
+    };
+
+    const handleReset = async () => {
+        if (!confirm('현재 반의 당일 출결 기록을 모두 삭제하시겠습니까?')) return;
+
+        setSaveLoading(true);
+        const { error } = await supabase
+            .from('attendance')
+            .delete()
+            .eq('class_id', selectedClass)
+            .eq('date', selectedDate);
+
+        if (error) {
+            triggerToast('기록 삭제 중 오류가 발생했습니다.', 'error');
+        } else {
+            setAttendanceData({});
+            triggerToast('출결 기록이 초기화되었습니다.');
         }
         setSaveLoading(false);
     };
@@ -135,8 +163,7 @@ export default function AttendancePage() {
     const setAllPresent = () => {
         const newData = { ...attendanceData };
         students.forEach(s => {
-            if (!newData[s.id]) newData[s.id] = { status: 'P', memo: '' };
-            else newData[s.id].status = 'P';
+            newData[s.id] = { ...newData[s.id], status: 'P' };
         });
         setAttendanceData(newData);
     };
@@ -177,11 +204,14 @@ export default function AttendancePage() {
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '8px', width: '100%', maxWidth: '400px' }}>
-                    <button onClick={setAllPresent} style={{ flex: 1, background: 'rgba(255,255,255,0.05)', color: 'white', padding: '10px', borderRadius: '10px', border: '1px solid var(--card-border)', cursor: 'pointer', fontSize: '13px' }}>
+                <div style={{ display: 'flex', gap: '8px', width: '100%', maxWidth: '500px' }}>
+                    <button onClick={setAllPresent} style={{ flex: 1, background: 'rgba(255,255,255,0.05)', color: 'white', padding: '10px', borderRadius: '10px', border: '1px solid var(--card-border)', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
                         전원 출석
                     </button>
-                    <button onClick={handleSave} disabled={saveLoading} className="btn-primary" style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '6px', padding: '10px', justifyContent: 'center', fontSize: '13px' }}>
+                    <button onClick={handleReset} style={{ flex: 1, background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', padding: '10px', borderRadius: '10px', border: '1px solid rgba(239, 68, 68, 0.2)', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+                        <Trash2 size={16} /> 기록 초기화
+                    </button>
+                    <button onClick={handleSave} disabled={saveLoading} className="btn-primary" style={{ flex: 1.5, display: 'flex', alignItems: 'center', gap: '6px', padding: '10px', justifyContent: 'center', fontSize: '13px' }}>
                         {saveLoading ? '저장...' : <><Save size={16} /> 기록 저장</>}
                     </button>
                 </div>
@@ -227,7 +257,7 @@ export default function AttendancePage() {
                                         </div>
                                     </td>
                                     <td style={{ padding: '20px 24px' }}>
-                                        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                                        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', alignItems: 'center' }}>
                                             {Object.entries(STATUS_CONFIG).map(([key, config]) => {
                                                 const Icon = config.icon;
                                                 const isActive = attendanceData[student.id]?.status === key;
@@ -235,6 +265,7 @@ export default function AttendancePage() {
                                                     <button
                                                         key={key}
                                                         onClick={() => updateStatus(student.id, key)}
+                                                        title={isActive ? "선택 취소" : config.label}
                                                         style={{
                                                             padding: '6px 10px', borderRadius: '8px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer',
                                                             background: isActive ? `${config.color}20` : 'rgba(255,255,255,0.03)',
@@ -243,10 +274,19 @@ export default function AttendancePage() {
                                                             transition: 'all 0.1s'
                                                         }}
                                                     >
-                                                        <Icon size={12} /> {config.label}
+                                                        {isActive ? <CheckCircle2 size={12} /> : <Icon size={12} />} {config.label}
                                                     </button>
                                                 );
                                             })}
+                                            {attendanceData[student.id]?.status && (
+                                                <button
+                                                    onClick={() => updateStatus(student.id, attendanceData[student.id]?.status)}
+                                                    style={{ padding: '6px', borderRadius: '8px', color: '#64748b', background: 'transparent', border: 'none', cursor: 'pointer' }}
+                                                    title="기록 삭제"
+                                                >
+                                                    <RotateCcw size={14} />
+                                                </button>
+                                            )}
                                         </div>
                                     </td>
                                     <td style={{ padding: '20px 24px' }}>
@@ -274,11 +314,6 @@ export default function AttendancePage() {
                     <motion.div
                         initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }}
                         className={`toast ${showToast.type}`}
-                        style={{
-                            position: 'fixed', bottom: '30px', right: '30px', padding: '16px 24px', borderRadius: '12px',
-                            background: 'rgba(15, 23, 42, 0.9)', backdropFilter: 'blur(8px)', border: '1px solid var(--card-border)',
-                            color: 'white', display: 'flex', alignItems: 'center', gap: '10px', zIndex: 9999
-                        }}
                     >
                         {showToast.type === 'success' ? <CheckCircle2 size={18} color="#10b981" /> : <AlertCircle size={18} color="#ef4444" />}
                         {showToast.message}
