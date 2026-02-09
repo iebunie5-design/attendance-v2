@@ -110,7 +110,12 @@ export default function ClassesPage() {
             // 수정
             const { error } = await supabase
                 .from('classes')
-                .update(payload)
+                .update({
+                    name: formData.name,
+                    teacher: formData.teacher,
+                    schedule: formData.schedule,
+                    room: formData.room
+                })
                 .eq('id', editingClass.id);
 
             if (error) {
