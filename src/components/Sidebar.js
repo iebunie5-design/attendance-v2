@@ -35,10 +35,12 @@ export default function Sidebar() {
           display: 'flex',
           alignItems: 'center',
           gap: '12px',
-          marginBottom: '40px'
+          marginBottom: '40px',
+          justifyContent: 'center'
         }}>
           <div style={{
             width: '40px',
+            minWidth: '40px',
             height: '40px',
             background: 'linear-gradient(135deg, #6366f1, #0ea5e9)',
             borderRadius: '10px',
@@ -51,7 +53,7 @@ export default function Sidebar() {
           }}>
             I
           </div>
-          <span style={{ fontWeight: 700, fontSize: '1.2rem', letterSpacing: '-0.5px' }}>
+          <span className="logo-text" style={{ fontWeight: 700, fontSize: '1.2rem', letterSpacing: '-0.5px' }}>
             IDEACUBE
           </span>
         </div>
@@ -79,8 +81,8 @@ export default function Sidebar() {
                     fontWeight: isActive ? 600 : 400
                   }}
                 >
-                  <Icon size={20} color={isActive ? '#6366f1' : '#94a3b8'} />
-                  {item.name}
+                  <Icon size={20} color={isActive ? '#6366f1' : '#94a3b8'} style={{ minWidth: '20px' }} />
+                  <span className="menu-text">{item.name}</span>
                   {isActive && (
                     <motion.div
                       layoutId="active-indicator"
@@ -101,42 +103,45 @@ export default function Sidebar() {
       </div>
 
       <div style={{ marginTop: 'auto', padding: '24px', borderTop: '1px solid var(--glass-border)' }}>
-        <div style={{
+        <div className="user-info" style={{
           display: 'flex',
           alignItems: 'center',
           gap: '12px',
           marginBottom: '20px',
-          padding: '8px'
+          padding: '8px',
+          justifyContent: 'center'
         }}>
           <div style={{
             width: '36px',
+            minWidth: '36px',
             height: '36px',
             borderRadius: '50%',
             background: '#1e293b',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '14px',
+            fontSize: '12px',
             border: '2px solid rgba(255,255,255,0.1)'
           }}>
             원장
           </div>
-          <div>
+          <div className="user-info-text">
             <div style={{ fontSize: '14px', fontWeight: 600 }}>김원장 님</div>
-            <div style={{ fontSize: '12px', color: '#64748b' }}>Admin Account</div>
+            <div style={{ fontSize: '11px', color: '#64748b' }}>Admin</div>
           </div>
         </div>
-        <button style={{
+        <button className="logout-button" style={{
           display: 'flex',
           alignItems: 'center',
           gap: '12px',
           color: '#f87171',
           padding: '8px',
           width: '100%',
-          fontSize: '14px'
+          fontSize: '14px',
+          justifyContent: 'center'
         }}>
           <LogOut size={16} />
-          로그아웃
+          <span className="menu-text">로그아웃</span>
         </button>
       </div>
     </aside>

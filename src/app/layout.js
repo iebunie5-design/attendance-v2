@@ -1,5 +1,6 @@
 import './globals.css';
 import Sidebar from '@/components/Sidebar';
+import MobileNav from '@/components/MobileNav';
 
 export const metadata = {
   title: '아이디어큐브 출결관리 - 프리미엄 시스템',
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
           <main className="content-wrapper">
             {children}
           </main>
+          <MobileNav />
         </div>
       </body>
     </html>

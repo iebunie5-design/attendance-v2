@@ -120,18 +120,32 @@ button {
 }
 
 @media (max-width: 1024px) {
+  :root {
+    --sidebar-width: 80px;
+  }
+
   .sidebar {
-    width: 80px;
+    width: var(--sidebar-width);
+  }
+
+  .sidebar span,
+  .sidebar .menu-text,
+  .sidebar .user-info-text {
+    display: none;
   }
 
   .content-wrapper {
-    margin-left: 80px;
-    width: calc(100% - 80px);
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
     padding: 24px;
   }
 }
 
 @media (max-width: 768px) {
+  :root {
+    --sidebar-width: 0px;
+  }
+
   .sidebar {
     display: none;
   }
@@ -139,9 +153,40 @@ button {
   .content-wrapper {
     margin-left: 0;
     width: 100%;
-    padding: 20px;
+    padding: 16px;
     padding-bottom: 100px;
+    /* Space for bottom nav */
   }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .mobile-nav {
+    display: flex !important;
+  }
+}
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: rgba(15, 15, 25, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--glass-border);
+  z-index: 1000;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 10px;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* Typography */

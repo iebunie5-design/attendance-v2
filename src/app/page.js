@@ -108,10 +108,12 @@ export default function Home() {
 
   return (
     <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
-      <header style={{
+      <header className="dashboard-header" style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
+        flexWrap: 'wrap',
+        gap: '20px',
         marginBottom: '40px'
       }}>
         <div>
@@ -119,7 +121,7 @@ export default function Home() {
           <p>오늘의 아이디어큐브 현황을 실시간으로 확인하세요.</p>
         </div>
         <Link href="/students">
-          <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', width: 'fit-content' }}>
             <Plus size={20} />
             새 학생 등록
           </button>
@@ -163,13 +165,13 @@ export default function Home() {
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '32px' }}>
+      <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
         {/* Today's Classes */}
         <div className="card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '10px' }}>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 600 }}>오늘 수업 현황</h2>
             <Link href="/attendance">
-              <button style={{ color: '#6366f1', fontSize: '14px', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer' }}>출결 기록하러 가기</button>
+              <button style={{ color: '#6366f1', fontSize: '14px', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer' }}>전체 기록</button>
             </Link>
           </div>
 
@@ -183,62 +185,49 @@ export default function Home() {
                   border: '1px solid rgba(255,255,255,0.05)',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '20px',
+                  gap: '12px',
                   transition: 'all 0.2s ease',
                   cursor: 'pointer'
                 }} className="class-item-hover">
                   <div style={{
-                    width: '50px',
-                    height: '50px',
+                    width: '40px',
+                    height: '40px',
                     borderRadius: '10px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     background: 'var(--glass-bg)',
-                    border: '1px solid var(--glass-border)'
+                    border: '1px solid var(--glass-border)',
+                    flexShrink: 0
                   }}>
-                    <Calendar size={20} color="#94a3b8" />
+                    <Calendar size={18} color="#94a3b8" />
                   </div>
 
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, fontSize: '16px', marginBottom: '4px' }}>{cls.name}</div>
-                    <div style={{ display: 'flex', gap: '16px', color: '#64748b', fontSize: '13px' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <Users size={14} /> {cls.total}명 등록됨
-                      </span>
-                    </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 600, fontSize: '15px', marginBottom: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{cls.name}</div>
+                    <div style={{ color: '#64748b', fontSize: '12px' }}>{cls.total}명 등록됨</div>
                   </div>
 
-                  <div style={{ textAlign: 'right' }}>
+                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
                     <div style={{
-                      fontSize: '13px',
-                      padding: '4px 10px',
-                      borderRadius: '8px',
+                      fontSize: '11px',
+                      padding: '2px 8px',
+                      borderRadius: '6px',
                       background: cls.status === 'completed' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255,255,255,0.05)',
                       color: cls.status === 'completed' ? '#34d399' : '#94a3b8',
-                      display: 'inline-block',
-                      marginBottom: '8px'
+                      marginBottom: '4px'
                     }}>
-                      {cls.status === 'completed' ? '기록완료' : '기록대기'}
+                      {cls.status === 'completed' ? '완료' : '대기'}
                     </div>
-                    <div style={{ fontSize: '12px', color: '#64748b' }}>
-                      {cls.status === 'completed' ? `출석 ${cls.present}/${cls.total}` : '출결 확인 필요'}
+                    <div style={{ fontSize: '11px', color: '#64748b' }}>
+                      {cls.present}/{cls.total}
                     </div>
-                  </div>
-
-                  <div style={{
-                    padding: '8px',
-                    borderRadius: '8px',
-                    background: 'rgba(255,255,255,0.05)',
-                    color: '#94a3b8'
-                  }}>
-                    <ChevronRight size={18} />
                   </div>
                 </div>
               </Link>
             )) : (
               <div style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>
-                오늘 등록된 수업 정보가 없습니다.
+                오늘 수업 정보가 없습니다.
               </div>
             )}
           </div>
@@ -255,16 +244,7 @@ export default function Home() {
               borderLeft: '4px solid #6366f1'
             }}>
               <div style={{ fontSize: '14px', fontWeight: 600, color: '#6366f1', marginBottom: '4px' }}>실시간 데이터 연동</div>
-              <div style={{ fontSize: '13px', color: '#94a3b8' }}>모든 데이터가 Supabase DB와 실시간으로 연동되고 있습니다.</div>
-            </div>
-            <div style={{
-              padding: '16px',
-              borderRadius: '12px',
-              background: 'rgba(16, 185, 129, 0.05)',
-              borderLeft: '4px solid #10b981'
-            }}>
-              <div style={{ fontSize: '14px', fontWeight: 600, color: '#10b981', marginBottom: '4px' }}>시스템 정상</div>
-              <div style={{ fontSize: '13px', color: '#94a3b8' }}>QR 스캔 및 수동 출결 시스템이 모두 활성화 상태입니다.</div>
+              <div style={{ fontSize: '13px', color: '#94a3b8' }}>Supabase DB와 실시간 연동 중입니다.</div>
             </div>
           </div>
         </div>

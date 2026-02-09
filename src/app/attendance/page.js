@@ -146,10 +146,10 @@ export default function AttendancePage() {
     return (
         <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
             {/* Header */}
-            <header style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                    <h1 style={{ fontSize: '1.8rem' }}>출결 기록</h1>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '8px' }}>
+            <header className="page-header" style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
+                <div style={{ flex: '1', minWidth: '200px' }}>
+                    <h1 style={{ fontSize: '1.8rem', marginBottom: '12px' }}>출결 기록</h1>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px' }}>
                         <select
                             value={selectedClass}
                             onChange={(e) => setSelectedClass(e.target.value)}
@@ -157,15 +157,16 @@ export default function AttendancePage() {
                                 background: 'rgba(255,255,255,0.05)',
                                 border: '1px solid var(--card-border)',
                                 color: 'white',
-                                padding: '8px 16px',
+                                padding: '8px 12px',
                                 borderRadius: '10px',
-                                outline: 'none'
+                                outline: 'none',
+                                fontSize: '14px'
                             }}
                         >
                             {classes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                         </select>
-                        <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', padding: '6px 12px', borderRadius: '10px', border: '1px solid var(--card-border)' }}>
-                            <Calendar size={14} style={{ marginRight: '8px', color: '#6366f1' }} />
+                        <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', padding: '6px 10px', borderRadius: '10px', border: '1px solid var(--card-border)' }}>
+                            <Calendar size={14} style={{ marginRight: '6px', color: '#6366f1' }} />
                             <input
                                 type="date"
                                 value={selectedDate}
@@ -176,28 +177,27 @@ export default function AttendancePage() {
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '12px' }}>
-                    <button onClick={setAllPresent} style={{ background: 'rgba(255,255,255,0.05)', color: 'white', padding: '10px 20px', borderRadius: '10px', border: '1px solid var(--card-border)', cursor: 'pointer' }}>
-                        전원 출석 처리
+                <div style={{ display: 'flex', gap: '8px', width: '100%', maxWidth: '400px' }}>
+                    <button onClick={setAllPresent} style={{ flex: 1, background: 'rgba(255,255,255,0.05)', color: 'white', padding: '10px', borderRadius: '10px', border: '1px solid var(--card-border)', cursor: 'pointer', fontSize: '13px' }}>
+                        전원 출석
                     </button>
-                    <button onClick={handleSave} disabled={saveLoading} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: '130px', justifyContent: 'center' }}>
-                        {saveLoading ? '저장 중...' : <><Save size={18} /> 기록 저장</>}
+                    <button onClick={handleSave} disabled={saveLoading} className="btn-primary" style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '6px', padding: '10px', justifyContent: 'center', fontSize: '13px' }}>
+                        {saveLoading ? '저장...' : <><Save size={16} /> 기록 저장</>}
                     </button>
                 </div>
             </header>
 
             {/* Content Table */}
             <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
-                <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--card-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', gap: '24px', fontSize: '14px', color: '#94a3b8' }}>
+                <div className="table-controls" style={{ padding: '16px 20px', borderBottom: '1px solid var(--card-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                    <div style={{ display: 'flex', gap: '16px', fontSize: '13px', color: '#94a3b8' }}>
                         <span>총 {students.length}명</span>
-                        <span>현재 기록된 인원: {Object.values(attendanceData).filter(a => a.status).length}명</span>
                     </div>
-                    <div style={{ position: 'relative' }}>
-                        <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#475569' }} />
+                    <div style={{ position: 'relative', flex: '1', maxWidth: '200px' }}>
+                        <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#475569' }} />
                         <input
                             type="text" placeholder="이름 검색..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-                            style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid var(--card-border)', borderRadius: '8px', padding: '8px 12px 8px 36px', color: 'white', fontSize: '14px', outline: 'none', width: '200px' }}
+                            style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid var(--card-border)', borderRadius: '8px', padding: '6px 10px 6px 32px', color: 'white', fontSize: '13px', outline: 'none', width: '100%' }}
                         />
                     </div>
                 </div>
@@ -227,7 +227,7 @@ export default function AttendancePage() {
                                         </div>
                                     </td>
                                     <td style={{ padding: '20px 24px' }}>
-                                        <div style={{ display: 'flex', gap: '8px' }}>
+                                        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
                                             {Object.entries(STATUS_CONFIG).map(([key, config]) => {
                                                 const Icon = config.icon;
                                                 const isActive = attendanceData[student.id]?.status === key;
@@ -236,14 +236,14 @@ export default function AttendancePage() {
                                                         key={key}
                                                         onClick={() => updateStatus(student.id, key)}
                                                         style={{
-                                                            padding: '8px 14px', borderRadius: '8px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer',
+                                                            padding: '6px 10px', borderRadius: '8px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer',
                                                             background: isActive ? `${config.color}20` : 'rgba(255,255,255,0.03)',
                                                             color: isActive ? config.color : '#64748b',
                                                             border: `1px solid ${isActive ? config.color : 'transparent'}`,
-                                                            transition: 'all 0.2s'
+                                                            transition: 'all 0.1s'
                                                         }}
                                                     >
-                                                        <Icon size={14} /> {config.label}
+                                                        <Icon size={12} /> {config.label}
                                                     </button>
                                                 );
                                             })}
