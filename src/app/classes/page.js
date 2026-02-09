@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import {
     Plus,
     Calendar,
@@ -20,6 +21,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
 
 export default function ClassesPage() {
+    const router = useRouter();
     const [classes, setClasses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,7 +32,6 @@ export default function ClassesPage() {
         teacher: '',
         schedule: '',
         room: '',
-        students: ''
     });
 
     // 1. 초기 데이터 불러오기 (Read)
@@ -40,15 +41,24 @@ export default function ClassesPage() {
 
     const fetchClasses = async () => {
         setLoading(true);
+        // classes 테이블을 가져오면서, 연관된 students 테이블의 개수를 함께 가져옵니다.
         const { data, error } = await supabase
             .from('classes')
-            .select('*')
+            .select(`
+                *,
+                student_count:students(count)
+            `)
             .order('created_at', { ascending: false });
 
         if (error) {
             triggerToast('데이터를 가져오는데 실패했습니다.', 'error');
         } else {
-            setClasses(data || []);
+            // supabase에서 반환된 count 데이터 구조를 가공합니다.
+            const formattedData = data.map(cls => ({
+                ...cls,
+                students: cls.student_count?.[0]?.count || 0
+            }));
+            setClasses(formattedData || []);
         }
         setLoading(false);
     };
@@ -62,7 +72,7 @@ export default function ClassesPage() {
     // 모달 제어
     const openAddModal = () => {
         setEditingClass(null);
-        setFormData({ name: '', teacher: '', schedule: '', room: '', students: '' });
+        setFormData({ name: '', teacher: '', schedule: '', room: '' });
         setIsModalOpen(true);
     };
 
@@ -94,7 +104,6 @@ export default function ClassesPage() {
         e.preventDefault();
         const payload = {
             ...formData,
-            students: parseInt(formData.students) || 0
         };
 
         if (editingClass) {
@@ -223,7 +232,10 @@ export default function ClassesPage() {
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#64748b' }}>
                                     <MapPin size={14} /> {cls.room}
                                 </div>
-                                <button className="detail-btn">
+                                <button
+                                    className="detail-btn"
+                                    onClick={() => router.push(`/attendance?classId=${cls.id}`)}
+                                >
                                     상세보기 <ChevronRight size={16} />
                                 </button>
                             </div>
@@ -302,17 +314,6 @@ export default function ClassesPage() {
                                         value={formData.schedule}
                                         onChange={(e) => setFormData({ ...formData, schedule: e.target.value })}
                                         placeholder="예: 월, 수 16:00"
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>현재 학생 수 (명)</label>
-                                    <input
-                                        type="number"
-                                        required
-                                        min="0"
-                                        value={formData.students}
-                                        onChange={(e) => setFormData({ ...formData, students: e.target.value })}
-                                        placeholder="0"
                                     />
                                 </div>
 

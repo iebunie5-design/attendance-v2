@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
     Check,
     Clock,
@@ -42,10 +42,17 @@ export default function AttendancePage() {
         fetchClasses();
     }, []);
 
+    const searchParams = useSearchParams();
+    const classIdFromQuery = searchParams.get('classId');
+
     const fetchClasses = async () => {
         const { data } = await supabase.from('classes').select('id, name');
         setClasses(data || []);
-        if (data && data.length > 0) {
+
+        // URL 쿼리에 반 ID가 있으면 해당 반을 먼저 선택, 없으면 첫 번째 반 선택
+        if (classIdFromQuery) {
+            setSelectedClass(classIdFromQuery);
+        } else if (data && data.length > 0) {
             setSelectedClass(data[0].id);
         }
     };
